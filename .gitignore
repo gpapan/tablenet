@@ -1,28 +1,6 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+mnist/data
+mnist/config/*/*_*.prototxt
+mnist/log
+mnist/model
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+*~
