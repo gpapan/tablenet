@@ -32,6 +32,8 @@ layer {
     backend: LMDB
   }
 }
+
+## Original
 layer {
   name: "conv1"
   type: "Convolution"
@@ -69,23 +71,79 @@ layer {
     stride: 2
   }
 }
+
+## Original
+# layer {
+#   name: "conv2"
+#   type: "Convolution"
+#   bottom: "pool1"
+#   top: "conv2"
+#   convolution_param {
+#     num_output: 64
+#     kernel_size: 5
+#     stride: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+
+# Tablenet with L = 32 centroids per group of Q = 4 activations,
+# We quantize 4 x 1 x 1 input patches and we do 5 x 5 LUT.
+# C_in = 32, C_out = 64.
+# G = C_in / Q = 8.
+
+# START Tablenet conv2
 layer {
-  name: "conv2"
+  name: "conv2_logit"
   type: "Convolution"
   bottom: "pool1"
-  top: "conv2"
+  top: "conv2_logit"
   convolution_param {
-    num_output: 64
-    kernel_size: 5
+    num_output: 256  # G * L
+    group: 8  # G
+    kernel_size: 1
     stride: 1
     weight_filler {
       type: "msra"
+      variance_norm: FAN_IN
     }
     bias_filler {
       type: "constant"
     }
   }
 }
+layer {
+  name: "conv2_softmax"
+  type: "Softmax"
+  bottom: "conv2_logit"
+  top: "conv2_softmax"
+  softmax_param {
+      axis: 1
+      outer_mul: 8  # G
+  }
+}
+layer {
+  name: "conv2_lut"
+  type: "Convolution"
+  bottom: "conv2_softmax"
+  top: "conv2"
+  convolution_param {
+    num_output: 64  # C_out
+    bias_term: false
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "msra"
+      variance_norm: FAN_OUT
+    }
+  }
+}
+# END Tablenet conv2
+
 layer {
   name: "conv2_bn"
   type: "BatchNorm"
@@ -106,21 +164,77 @@ layer {
     stride: 2
   }
 }
+
+## Original
+# layer {
+#   name: "ip1"
+#   type: "InnerProduct"
+#   bottom: "pool2"
+#   top: "ip1"
+#   inner_product_param {
+#     num_output: 512
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+
+# Tablenet with L = 32 centroids per group of Q = 8 activations,
+# We quantize 8 x 1 x 1 input patches and we do 4 x 4 LUT.
+# C_in = 64, C_out = 512.
+# G = C_in / Q = 8.
+
+# START Tablenet ip1
 layer {
-  name: "ip1"
-  type: "InnerProduct"
+  name: "ip1_logit"
+  type: "Convolution"  # Convolution cause InnerProduct does not support group
   bottom: "pool2"
-  top: "ip1"
-  inner_product_param {
-    num_output: 512
+  top: "ip1_logit"
+  convolution_param {
+    num_output: 256  # G * L
+    group: 8  # G
+    kernel_size: 1
+    stride: 1
     weight_filler {
       type: "msra"
+      variance_norm: FAN_IN
     }
     bias_filler {
       type: "constant"
     }
   }
 }
+layer {
+  name: "ip1_softmax"
+  type: "Softmax"
+  bottom: "ip1_logit"
+  top: "ip1_softmax"
+  softmax_param {
+      axis: 1
+      outer_mul: 8  # G
+  }
+}
+layer {
+  name: "ip1_lut"
+  type: "Convolution"
+  bottom: "ip1_softmax"
+  top: "ip1"
+  convolution_param {
+    num_output: 512
+    bias_term: false
+    kernel_size: 4
+    stride: 1
+    weight_filler {
+      type: "msra"
+      variance_norm: FAN_OUT
+    }
+  }
+}
+# END Tablenet ip1
+
 layer {
   name: "ip1_bn"
   type: "BatchNorm"
