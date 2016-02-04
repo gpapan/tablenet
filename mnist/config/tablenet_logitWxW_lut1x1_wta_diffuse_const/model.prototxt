@@ -85,6 +85,7 @@ layer {
   softmax_param {
       axis: 1
       outer_mul: 1  # G
+      wta: DIFFUSE_CONST
   }
 }
 layer {
@@ -178,6 +179,7 @@ layer {
   softmax_param {
       axis: 1
       outer_mul: 8  # G
+      wta: DIFFUSE_CONST
   }
 }
 layer {
@@ -269,6 +271,7 @@ layer {
   softmax_param {
       axis: 1
       outer_mul: 16  # G
+      wta: DIFFUSE_CONST
   }
 }
 layer {
@@ -277,7 +280,7 @@ layer {
   bottom: "ip1_softmax"
   top: "ip1"
   convolution_param {
-    num_output: 512
+    num_output: 512  # C_out
     bias_term: false
     kernel_size: 1
     stride: 1

@@ -11,15 +11,40 @@ NUM_LABELS=10
 # Uncomment the NET_ID you want to experiment with.
 
 # (1) Baseline convnet with filters of size [C_out C_in W W]. Time: 1.8 sec.
-# NET_ID=lenet  ## 0.9895
+#NET_ID=lenet  ## 0.9895
 
 # (2) Tablenet quantizing Q x W x W input patches. Has 1 x 1 LUTs. Time 5.2 sec.
-#NET_ID=tablenet_logitWxW_lut1x1  ## 0.9885
+# NET_ID=tablenet_logitWxW_lut1x1  ## 0.9885
 
 # (3) Tablenet quantizing Q x 1 x 1 input patches and having W x W LUTs. Time 5.8 sec.
 # NET_ID=tablenet_logit1x1_lutWxW  ## 0.9874
 
+## Various forms of (soft) Winner-Take-All
+
+# (4) Similar to (2) but enforces semi-hard assignment:
+#     Dominant state retains its p_max, others receive (1 - p_max) / (L - 1). Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_intact  ## 0.9859
+
+# (5) Similar to (2) but enforces semi-hard assignment:
+#     Dominant state gets prob_winner = 0.5, others receive (1 - prob_winner) / (L - 1). Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_const  ## 
+
+# (6) Similar to (2) but enforces hard assignment:
+#     Dominant state retains its p_max, others receive 0. Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_intact  ## 0.9829
+
+# (7) Similar to (2) but enforces hard assignment:
+#     Dominant state receives prob_winner = 0.5, others receive 0. Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_const  ## 
+
 DEV_ID=0
+
+for NET_ID in \
+    tablenet_logitWxW_lut1x1_wta_diffuse_intact \
+    tablenet_logitWxW_lut1x1_wta_diffuse_const \
+    tablenet_logitWxW_lut1x1_wta_hard_intact \
+    tablenet_logitWxW_lut1x1_wta_hard_const; \
+do
 
 #####
 
@@ -76,3 +101,6 @@ if [ ${RUN_TEST} -eq 1 ]; then
          --iterations=${TEST_ITER}"
     echo Running ${CMD} && ${CMD}
 fi
+
+
+done
