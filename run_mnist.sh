@@ -23,28 +23,23 @@ NUM_LABELS=10
 
 # (4) Similar to (2) but enforces semi-hard assignment:
 #     Dominant state retains its p_max, others receive (1 - p_max) / (L - 1). Time 5.2 sec.
-# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_intact  ## 0.9859
+# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_intact  ## 0.9827
 
 # (5) Similar to (2) but enforces semi-hard assignment:
-#     Dominant state gets prob_winner = 0.5, others receive (1 - prob_winner) / (L - 1). Time 5.2 sec.
-# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_const  ## 
+#     Dominant state gets prob_winner, others receive (1 - prob_winner) / (L - 1). Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_const  ## 0.8067 (prob_winner = 0.5) / 0.9597 (prob_winner = 0.9) / 0.9598 (prob_winner = 0.95)
 
 # (6) Similar to (2) but enforces hard assignment:
 #     Dominant state retains its p_max, others receive 0. Time 5.2 sec.
-# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_intact  ## 0.9829
+# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_intact  ## 0.9738
 
 # (7) Similar to (2) but enforces hard assignment:
-#     Dominant state receives prob_winner = 0.5, others receive 0. Time 5.2 sec.
-# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_const  ## 
+#     Dominant state receives prob_winner, others receive 0. Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_hard_const  ## 0.8606 -- oscillates a lot (prob_winner = 0.5)
+
+for NET_ID in tablenet_logitWxW_lut1x1 tablenet_logitWxW_lut1x1_wta_hard_const; do
 
 DEV_ID=0
-
-for NET_ID in \
-    tablenet_logitWxW_lut1x1_wta_diffuse_intact \
-    tablenet_logitWxW_lut1x1_wta_diffuse_const \
-    tablenet_logitWxW_lut1x1_wta_hard_intact \
-    tablenet_logitWxW_lut1x1_wta_hard_const; \
-do
 
 #####
 
@@ -101,6 +96,5 @@ if [ ${RUN_TEST} -eq 1 ]; then
          --iterations=${TEST_ITER}"
     echo Running ${CMD} && ${CMD}
 fi
-
 
 done

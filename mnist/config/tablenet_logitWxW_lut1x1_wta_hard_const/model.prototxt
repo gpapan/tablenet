@@ -86,6 +86,7 @@ layer {
       axis: 1
       outer_mul: 1  # G
       wta: HARD_CONST
+      prob_winner: 0.5
   }
 }
 layer {
@@ -180,6 +181,7 @@ layer {
       axis: 1
       outer_mul: 8  # G
       wta: HARD_CONST
+      prob_winner: 0.5
   }
 }
 layer {
@@ -272,6 +274,7 @@ layer {
       axis: 1
       outer_mul: 16  # G
       wta: HARD_CONST
+      prob_winner: 0.5
   }
 }
 layer {
