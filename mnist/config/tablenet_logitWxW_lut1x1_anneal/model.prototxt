@@ -78,6 +78,31 @@ layer {
   }
 }
 
+
+layer {
+  name: "conv1_logit_bn"
+  type: "BatchNorm"
+  bottom: "conv1_logit"
+  top: "conv1_logit"
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+
+layer {
+  name: "Anneal1"
+  type: "Anneal"
+  bottom: "conv1_logit"
+  top: "conv1_logit"
+  power_param {
+	t_0: 0
+	t_1: 5000
+	scale_0: 1
+	scale_1: 20
+	batch_size: 64		
+  }
+}
+
 layer {
   name: "conv1_softmax"
   type: "Softmax"
