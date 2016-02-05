@@ -196,6 +196,31 @@ layer {
     }
   }
 }
+
+layer {
+  name: "conv2_logit_bn"
+  type: "BatchNorm"
+  bottom: "conv2_logit"
+  top: "conv2_logit"
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+
+layer {
+  name: "Anneal2"
+  type: "Anneal"
+  bottom: "conv2_logit"
+  top: "conv2_logit"
+  power_param {
+	t_0: 0
+	t_1: 5000
+	scale_0: 1
+	scale_1: 20
+	batch_size: 64		
+  }
+}
+
 layer {
   name: "conv2_softmax"
   type: "Softmax"
@@ -287,6 +312,31 @@ layer {
     }
   }
 }
+
+layer {
+  name: "ip1_logit_bn"
+  type: "BatchNorm"
+  bottom: "ip1_logit"
+  top: "ip1_logit"
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+
+layer {
+  name: "Anneal3"
+  type: "Anneal"
+  bottom: "ip1_logit"
+  top: "ip1_logit"
+  power_param {
+	t_0: 0
+	t_1: 5000
+	scale_0: 1
+	scale_1: 20
+	batch_size: 64		
+  }
+}
+
 layer {
   name: "ip1_softmax"
   type: "Softmax"
