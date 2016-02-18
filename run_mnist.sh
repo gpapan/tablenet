@@ -37,7 +37,15 @@ NUM_LABELS=10
 #     Dominant state receives prob_winner, others receive 0. Time 5.2 sec.
 # NET_ID=tablenet_logitWxW_lut1x1_wta_hard_const  ## 0.8606 -- oscillates a lot (prob_winner = 0.5)
 
-for NET_ID in tablenet_logitWxW_lut1x1 tablenet_logitWxW_lut1x1_wta_hard_const; do
+# (8) Similar to (2) but enforces semi-hard assignment:
+#     Dominant state retains its p_max, others receive (1 - prob_winner) / (L - 1). Time 5.2 sec.
+# NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_intact_epsilon  ## 0.9846 (prob_winner = 0.5) / 0.9813 (prob_winner = 0.9)
+
+# (101) Tablenet with tree-structured classifier and LUT stages
+#NET_ID=treenet_logitWxW_lut1x1  ## 98.3% (balance_tree=false) - 98.6% (balance_tree=true)
+#NET_ID=treenet_logit1x1_lutWxW  ## too many parameters, accuracy oscillates between 60% and 96%
+
+for NET_ID in treenet_logitWxW_lut1x1; do
 
 DEV_ID=0
 

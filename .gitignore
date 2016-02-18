@@ -3,4 +3,9 @@ mnist/config/*/*_*.prototxt
 mnist/log
 mnist/model
 
+cifar10/data
+cifar10/config/*/*_*.prototxt
+cifar10/log
+cifar10/model
+
 *~
