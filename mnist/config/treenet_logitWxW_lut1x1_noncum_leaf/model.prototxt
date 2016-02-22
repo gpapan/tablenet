@@ -66,7 +66,7 @@ layer {
   bottom: "data"
   top: "conv1_classify"
   convolution_param {
-    kernel_size: 1
+    kernel_size: 5
     stride: 1
     weight_filler {
       #type: "msra"
@@ -79,6 +79,9 @@ layer {
   tree_classifier_param {
     depth: 5
     group: 1
+    is_cumulative: false
+    balance_tree: false
+    alpha: 1
   }
 }
 layer {
@@ -88,7 +91,7 @@ layer {
   top: "conv1"
   convolution_param {
     num_output: 32
-    kernel_size: 5
+    kernel_size: 1
     stride: 1
     weight_filler {
       #type: "msra"
@@ -101,6 +104,9 @@ layer {
   tree_lut_param {
     depth: 5
     group: 1
+    leaf_only: true
+    haar_param: false
+    alpha: 1
   }
 }
 # END Tablenet conv1
@@ -153,7 +159,7 @@ layer {
   bottom: "pool1"
   top: "conv2_classify"
   convolution_param {
-    kernel_size: 1
+    kernel_size: 5
     stride: 1
     weight_filler {
       #type: "msra"
@@ -166,7 +172,9 @@ layer {
   tree_classifier_param {
     depth: 5
     group: 8
-    is_cumulative: true
+    is_cumulative: false
+    balance_tree: false
+    alpha: 1
   }
 }
 layer {
@@ -176,7 +184,7 @@ layer {
   top: "conv2"
   convolution_param {
     num_output: 64
-    kernel_size: 5
+    kernel_size: 1
     stride: 1
     weight_filler {
       #type: "msra"
@@ -189,6 +197,9 @@ layer {
   tree_lut_param {
     depth: 5
     group: 8
+    leaf_only: true
+    haar_param: false
+    alpha: 1
   }
 }
 # END Tablenet conv2
@@ -239,7 +250,7 @@ layer {
   bottom: "pool2"
   top: "ip1_classify"
   convolution_param {
-    kernel_size: 1
+    kernel_size: 4
     stride: 1
     weight_filler {
       #type: "msra"
@@ -252,7 +263,9 @@ layer {
   tree_classifier_param {
     depth: 5
     group: 16
-    is_cumulative: true
+    is_cumulative: false
+    balance_tree: false
+    alpha: 1
   }
 }
 layer {
@@ -262,7 +275,7 @@ layer {
   top: "ip1"
   convolution_param {
     num_output: 512
-    kernel_size: 4
+    kernel_size: 1
     stride: 1
     weight_filler {
       #type: "msra"
@@ -275,6 +288,9 @@ layer {
   tree_lut_param {
     depth: 5
     group: 16
+    leaf_only: true
+    haar_param: false
+    alpha: 1
   }
 }
 # END Tablenet ip1

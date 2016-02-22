@@ -1,9 +1,3 @@
-# TableNet parameter setting:
-# If we have L centroids, then
-# depth = log2(L)
-# If we have C_in input channels, split into groups of Q channels, then
-# group = C_in / Q
-
 layer {
   name: "mnist"
   type: "Data"
@@ -58,49 +52,57 @@ layer {
 #   }
 # }
 
-# L = 32 centroids, PQ on Q = 1 activation.
+# Tablenet with L = 16 centroids per group of Q = 1 activation.
+# We quantize 1 x 5 x 5 input patches and we do 1 x 1 LUT.
+# C_in = 1, C_out = 32.
+# G = C_in / Q = 1.
+
 # START Tablenet conv1
 layer {
-  name: "conv1_classify"
-  type: "ConvolutionTreeClassify"
+  name: "conv1_logit"
+  type: "Convolution"
   bottom: "data"
-  top: "conv1_classify"
+  top: "conv1_logit"
   convolution_param {
-    kernel_size: 1
+    num_output: 16  # G * L
+    group: 1  # G
+    kernel_size: 5
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_IN
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_IN
     }
-    bias_filler { type: "constant" }
+    bias_filler {
+      type: "constant"
+    }
   }
-  tree_classifier_param {
-    depth: 5
-    group: 1
+}
+layer {
+  name: "conv1_softmax"
+  type: "Softmax"
+  bottom: "conv1_logit"
+  top: "conv1_softmax"
+  softmax_param {
+      axis: 1
+      outer_mul: 1  # G
+      wta: DIFFUSE_INTACT_EPSILON
+      prob_winner: 0.5
   }
 }
 layer {
   name: "conv1_lut"
-  type: "ConvolutionTreeLUT"
-  bottom: "conv1_classify"
+  type: "Convolution"
+  bottom: "conv1_softmax"
   top: "conv1"
   convolution_param {
-    num_output: 32
-    kernel_size: 5
+    num_output: 32  # C_out
+    bias_term: false
+    kernel_size: 1
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_OUT
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_OUT
     }
-    bias_filler { type: "constant" }
-  }
-  tree_lut_param {
-    depth: 5
-    group: 1
   }
 }
 # END Tablenet conv1
@@ -145,50 +147,57 @@ layer {
 #   }
 # }
 
-# L = 32 centroids, PQ on Q = 4 activations.
+# Tablenet with L = 32 centroids per group of Q = 4 activations,
+# We quantize 4 x 5 x 5 input patches and we do 1 x 1 LUT.
+# C_in = 32, C_out = 64.
+# G = C_in / Q = 8.
+
 # START Tablenet conv2
 layer {
-  name: "conv2_classify"
-  type: "ConvolutionTreeClassify"
+  name: "conv2_logit"
+  type: "Convolution"
   bottom: "pool1"
-  top: "conv2_classify"
+  top: "conv2_logit"
   convolution_param {
-    kernel_size: 1
+    num_output: 256  # G * L
+    group: 8  # G
+    kernel_size: 5
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_IN
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_IN
     }
-    bias_filler { type: "constant" }
+    bias_filler {
+      type: "constant"
+    }
   }
-  tree_classifier_param {
-    depth: 5
-    group: 8
-    is_cumulative: true
+}
+layer {
+  name: "conv2_softmax"
+  type: "Softmax"
+  bottom: "conv2_logit"
+  top: "conv2_softmax"
+  softmax_param {
+      axis: 1
+      outer_mul: 8  # G
+      wta: DIFFUSE_INTACT_EPSILON
+      prob_winner: 0.5
   }
 }
 layer {
   name: "conv2_lut"
-  type: "ConvolutionTreeLUT"
-  bottom: "conv2_classify"
+  type: "Convolution"
+  bottom: "conv2_softmax"
   top: "conv2"
   convolution_param {
-    num_output: 64
-    kernel_size: 5
+    num_output: 64  # C_out
+    bias_term: false
+    kernel_size: 1
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_OUT
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_OUT
     }
-    bias_filler { type: "constant" }
-  }
-  tree_lut_param {
-    depth: 5
-    group: 8
   }
 }
 # END Tablenet conv2
@@ -231,50 +240,57 @@ layer {
 #   }
 # }
 
-# L = 32 centroids, PQ on Q = 4 activations.
+# Tablenet with L = 32 centroids per group of Q = 4 activations,
+# We quantize 4 x 4 x 4 input patches and we do 1 x 1 LUT.
+# C_in = 64, C_out = 512.
+# G = C_in / Q = 16.
+
 # START Tablenet ip1
 layer {
-  name: "ip1_classify"
-  type: "ConvolutionTreeClassify"
+  name: "ip1_logit"
+  type: "Convolution"  # Convolution cause InnerProduct does not support group
   bottom: "pool2"
-  top: "ip1_classify"
+  top: "ip1_logit"
   convolution_param {
-    kernel_size: 1
+    num_output: 512  # G * L
+    group: 16  # G
+    kernel_size: 4
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_IN
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_IN
     }
-    bias_filler { type: "constant" }
+    bias_filler {
+      type: "constant"
+    }
   }
-  tree_classifier_param {
-    depth: 5
-    group: 16
-    is_cumulative: true
+}
+layer {
+  name: "ip1_softmax"
+  type: "Softmax"
+  bottom: "ip1_logit"
+  top: "ip1_softmax"
+  softmax_param {
+      axis: 1
+      outer_mul: 16  # G
+      wta: DIFFUSE_INTACT_EPSILON
+      prob_winner: 0.5
   }
 }
 layer {
   name: "ip1_lut"
-  type: "ConvolutionTreeLUT"
-  bottom: "ip1_classify"
+  type: "Convolution"
+  bottom: "ip1_softmax"
   top: "ip1"
   convolution_param {
-    num_output: 512
-    kernel_size: 4
+    num_output: 512  # C_out
+    bias_term: false
+    kernel_size: 1
     stride: 1
     weight_filler {
-      #type: "msra"
-      #variance_norm: FAN_OUT
-      type: "gaussian"
-      std: 0.01
+      type: "msra"
+      variance_norm: FAN_OUT
     }
-    bias_filler { type: "constant" }
-  }
-  tree_lut_param {
-    depth: 5
-    group: 16
   }
 }
 # END Tablenet ip1

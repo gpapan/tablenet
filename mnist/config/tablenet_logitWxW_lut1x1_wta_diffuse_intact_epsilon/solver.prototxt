@@ -11,11 +11,9 @@ base_lr: 0.01
 momentum: 0.9
 weight_decay: 0.0005
 # The learning rate policy
-#lr_policy: "inv"
-#gamma: 0.0001
-#power: 0.75
-lr_policy: "poly"
-power: 0.5
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
 # Display every 100 iterations
 display: 100
 average_loss: 100

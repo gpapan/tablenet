@@ -42,10 +42,20 @@ NUM_LABELS=10
 # NET_ID=tablenet_logitWxW_lut1x1_wta_diffuse_intact_epsilon  ## 0.9846 (prob_winner = 0.5) / 0.9813 (prob_winner = 0.9)
 
 # (101) Tablenet with tree-structured classifier and LUT stages
-#NET_ID=treenet_logitWxW_lut1x1  ## 98.3% (balance_tree=false) - 98.6% (balance_tree=true)
+#NET_ID=treenet_logitWxW_lut1x1  ## 98.5% (balance_tree=false) - 99.08% (balance_tree=true)
 #NET_ID=treenet_logit1x1_lutWxW  ## too many parameters, accuracy oscillates between 60% and 96%
 
-for NET_ID in treenet_logitWxW_lut1x1; do
+# (102) Tablenet with tree-structured classifier and LUT stages. Only leaf LUT eval.
+#NET_ID=treenet_logitWxW_lut1x1_leaf  ## 98.5 (alpha = sqrt(2), haar_param=1) / 98.7 (alpha = 1, haar_param=1) / 98.6 (alpha = 1, haar_param=0)
+
+# (103) Tablenet with tree-structured classifier and LUT stages.
+#       Noncumulative classifier, only leaf LUT eval.
+#NET_ID=treenet_logitWxW_lut1x1_noncum_leaf
+# 98.6% when classifier.alpha=sqrt(2) (with some oscillations)
+# 98.9% when classifier.alpha=1
+# 98.8% when classifier.alpha=1 and balalnce_tree=false
+
+for NET_ID in treenet_logitWxW_lut1x1_noncum_leaf; do
 
 DEV_ID=0
 
@@ -67,6 +77,7 @@ ${DATA_DIR}/prepare_mnist.sh
 # Run 
 
 RUN_TRAIN=1
+RUN_TIME=0
 RUN_TEST=0
 
 # Training + Testing
@@ -85,6 +96,21 @@ if [ ${RUN_TRAIN} -eq 1 ]; then
     if [ -f ${MODEL} ]; then
 	CMD="${CMD} --weights=${MODEL}"
     fi
+    echo Running ${CMD} && ${CMD}
+fi
+
+if [ ${RUN_TIME} -eq 1 ]; then
+    MODEL=${MODEL_DIR}/test.caffemodel
+    if [ ! -f ${MODEL} ]; then
+	MODEL=`ls -t ${MODEL_DIR}/train_iter_*.caffemodel | head -n 1`
+    fi
+    echo Testing net ${EXP}/${NET_ID}
+    TEST_ITER=100  # 10,000 images in 100 batches
+    CMD="${CAFFE_BIN} time \
+         --model=${CONFIG_DIR}/model.prototxt \
+         --weights=${MODEL} \
+         --gpu=${DEV_ID} \
+         --iterations=${TEST_ITER}"
     echo Running ${CMD} && ${CMD}
 fi
 
