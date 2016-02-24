@@ -6,12 +6,13 @@ CAFFE_BIN=${CAFFE_DIR}/.build_release/tools/caffe.bin
 EXP=cifar10
 NUM_LABELS=10
 
-# Times refer to 100 train iters of 64-image mini-batches on a Titan-X.
+# Times refer to 100 train iters of 128-image mini-batches on a Titan-X.
 
-# Uncomment the NET_ID you want to experiment with.
-# NET_ID=treenet_logit1x1_lutWxW  ## too many parameters, accuracy oscillates between 60% and 96%
+# Baseline
+#NET_ID=convnet
+# NET_ID=treenet_logit1x1_lutWxW_noncum_leaf  ## too many parameters, accuracy oscillates between 60% and 96%
 
-for NET_ID in treenet_logitWxW_lut1x1_noncum_leaf; do
+for NET_ID in convnet; do
 
 DEV_ID=0
 
