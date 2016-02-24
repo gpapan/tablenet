@@ -1,0 +1,348 @@
+# TableNet parameter setting:
+# If we have L centroids, then
+# depth = log2(L)
+# If we have C_in input channels, split into groups of Q channels, then
+# group = C_in / Q
+
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "mnist/data/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "mnist/data/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+
+## Original
+# layer {
+#   name: "conv1"
+#   type: "Convolution"
+#   bottom: "data"
+#   top: "conv1"
+#   convolution_param {
+#     num_output: 32
+#     kernel_size: 5
+#     stride: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+
+# L = 32 centroids, PQ on Q = 1 activation.
+# START Tablenet conv1
+layer {
+  name: "conv1_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "data"
+  top: "conv1_logit"
+  top: "conv1_ind"
+  convolution_param {
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_IN
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv1_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv1_logit"
+  bottom: "conv1_ind"
+  top: "conv1"
+  convolution_param {
+    num_output: 32
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_OUT
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv1
+
+layer {
+  name: "conv1_bn"
+  type: "BatchNorm"
+  bottom: "conv1"
+  top: "conv1"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+## Original
+# layer {
+#   name: "conv2"
+#   type: "Convolution"
+#   bottom: "pool1"
+#   top: "conv2"
+#   convolution_param {
+#     num_output: 64
+#     kernel_size: 5
+#     stride: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+
+# L = 32 centroids, PQ on Q = 4 activations.
+# START Tablenet conv2
+layer {
+  name: "conv2_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "pool1"
+  top: "conv2_logit"
+  top: "conv2_ind"
+  convolution_param {
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_IN
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 8
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv2_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv2_logit"
+  bottom: "conv2_ind"
+  top: "conv2"
+  convolution_param {
+    num_output: 64
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_OUT
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 8
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv2
+
+layer {
+  name: "conv2_bn"
+  type: "BatchNorm"
+  bottom: "conv2"
+  top: "conv2"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+## Original
+# layer {
+#   name: "ip1"
+#   type: "InnerProduct"
+#   bottom: "pool2"
+#   top: "ip1"
+#   inner_product_param {
+#     num_output: 512
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+
+# L = 32 centroids, PQ on Q = 4 activations.
+# START Tablenet ip1
+layer {
+  name: "ip1_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "pool2"
+  top: "ip1_logit"
+  top: "ip1_ind"
+  convolution_param {
+    kernel_size: 4
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_IN
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 16
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "ip1_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "ip1_logit"
+  bottom: "ip1_ind"
+  top: "ip1"
+  convolution_param {
+    num_output: 512
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      #type: "msra"
+      #variance_norm: FAN_OUT
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 16
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet ip1
+
+layer {
+  name: "ip1_bn"
+  type: "BatchNorm"
+  bottom: "ip1"
+  top: "ip1"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
