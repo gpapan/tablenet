@@ -53,9 +53,25 @@ NUM_LABELS=10
 #NET_ID=treenet_logitWxW_lut1x1_noncum_leaf
 # 98.6% when classifier.alpha=sqrt(2) (with some oscillations)
 # 98.9% when classifier.alpha=1
-# 98.8% when classifier.alpha=1 and balalnce_tree=false
+# 98.8% when classifier.alpha=1 and balance_tree=false
 
-for NET_ID in treenet_logitWxW_lut1x1_noncum_leaf; do
+# (200+) Tablenet with tree-structured classifier and LUT stages.
+#        No sigmoids, just logits.
+#
+# (201)
+#NET_ID=treenet2_logitWxW_lut1x1_term_depth
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree=true, 10K iters
+# Forward pass: 17.1941 ms. Backward pass: 60.3971 ms. (conv2_lut forward: 1.12195 ms)
+# -> 0.9896 ("poly", power: 0.5)
+# -> 0.9859 ("inv", gamma: 0.0001, power: 0.75)
+
+# (202)
+#NET_ID=treenet2_logitWxW_lut1x1_term_1
+# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
+# Forward pass: 15.1398 ms. Backward pass: 49.4828 ms. (conv2_lut forward: 0.795006 ms)
+# -> 0.9876 ("poly", power: 0.5)
+
+for NET_ID in treenet2_logitWxW_lut1x1_term_1; do
 
 DEV_ID=0
 
@@ -76,8 +92,8 @@ ${DATA_DIR}/prepare_mnist.sh
 
 # Run 
 
-RUN_TRAIN=1
-RUN_TIME=0
+RUN_TRAIN=0
+RUN_TIME=1
 RUN_TEST=0
 
 # Training + Testing
