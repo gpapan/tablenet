@@ -10,9 +10,23 @@ NUM_LABELS=10
 
 # Baseline
 #NET_ID=convnet
-# NET_ID=treenet_logit1x1_lutWxW_noncum_leaf  ## too many parameters, accuracy oscillates between 60% and 96%
 
-for NET_ID in convnet; do
+# (200+) Tablenet with tree-structured classifier and LUT stages.
+#        No sigmoids, just logits.
+#
+# (201)
+#NET_ID=treenet2_logitWxW_lut1x1_term_depth
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree=true
+# Forward pass: 92.514 ms. Backward pass: 616.978 ms.
+# ->
+
+# (202)
+#NET_ID=treenet2_logitWxW_lut1x1_term_1
+# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
+# Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
+# ->
+
+for NET_ID in treenet2_logitWxW_lut1x1_term_depth; do
 
 DEV_ID=0
 
