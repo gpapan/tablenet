@@ -1,0 +1,615 @@
+# TableNet parameter setting:
+# If we have L centroids, then
+# depth = log2(L)
+# If we have C_in input channels, split into groups of Q channels, then
+# group = C_in / Q
+
+layer {
+  name: "cifar10"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    #scale: 0.00390625
+    mirror: true
+  }
+  data_param {
+    source: "cifar10/data/white/cifar10_train_leveldb"
+    batch_size: 128
+    backend: LEVELDB
+  }
+}
+layer {
+  name: "cifar10"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    #scale: 0.00390625
+  }
+  data_param {
+    source: "cifar10/data/white/cifar10_test_leveldb"
+    batch_size: 100
+    backend: LEVELDB
+  }
+}
+
+## Original
+# layer {
+#   name: "conv1"
+#   type: "Convolution"
+#   bottom: "data"
+#   top: "conv1"
+#   convolution_param {
+#     num_output: 64
+#     kernel_size: 3
+#     stride: 1
+#     pad: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv1
+layer {
+  name: "conv1_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "data"
+  top: "conv1_logit"
+  top: "conv1_ind"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    pad: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv1_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv1_logit"
+  bottom: "conv1_ind"
+  top: "conv1"
+  convolution_param {
+    num_output: 64
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv1
+layer {
+  name: "conv1_bn"
+  type: "BatchNorm"
+  bottom: "conv1"
+  top: "conv1"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+# layer {
+#   name: "conv1_relu"
+#   type: "ReLU"
+#   bottom: "conv1"
+#   top: "conv1"
+# }
+
+## Original
+# layer {
+#   name: "conv2"
+#   type: "Convolution"
+#   bottom: "conv1"
+#   top: "conv2"
+#   convolution_param {
+#     num_output: 64
+#     kernel_size: 3
+#     stride: 1
+#     pad: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv2
+layer {
+  name: "conv2_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "conv1"
+  top: "conv2_logit"
+  top: "conv2_ind"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    pad: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 16
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv2_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv2_logit"
+  bottom: "conv2_ind"
+  top: "conv2"
+  convolution_param {
+    num_output: 64
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 16
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv2
+layer {
+  name: "conv2_bn"
+  type: "BatchNorm"
+  bottom: "conv2"
+  top: "conv2"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+# layer {
+#   name: "conv2_relu"
+#   type: "ReLU"
+#   bottom: "conv2"
+#   top: "conv2"
+# }
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+## Original
+# layer {
+#   name: "conv3"
+#   type: "Convolution"
+#   bottom: "pool2"
+#   top: "conv3"
+#   convolution_param {
+#     num_output: 128
+#     kernel_size: 3
+#     stride: 1
+#     pad: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv3
+layer {
+  name: "conv3_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "pool2"
+  top: "conv3_logit"
+  top: "conv3_ind"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    pad: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv3_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv3_logit"
+  bottom: "conv3_ind"
+  top: "conv3"
+  convolution_param {
+    num_output: 128
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv3
+layer {
+  name: "conv3_bn"
+  type: "BatchNorm"
+  bottom: "conv3"
+  top: "conv3"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+# layer {
+#   name: "conv3_relu"
+#   type: "ReLU"
+#   bottom: "conv3"
+#   top: "conv3"
+# }
+
+## Original
+# layer {
+#   name: "conv4"
+#   type: "Convolution"
+#   bottom: "conv3"
+#   top: "conv4"
+#   convolution_param {
+#     num_output: 128
+#     kernel_size: 3
+#     stride: 1
+#     pad: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv4
+layer {
+  name: "conv4_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "conv3"
+  top: "conv4_logit"
+  top: "conv4_ind"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    pad: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv4_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv4_logit"
+  bottom: "conv4_ind"
+  top: "conv4"
+  convolution_param {
+    num_output: 128
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv4
+layer {
+  name: "conv4_bn"
+  type: "BatchNorm"
+  bottom: "conv4"
+  top: "conv4"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+# layer {
+#   name: "conv4_relu"
+#   type: "ReLU"
+#   bottom: "conv4"
+#   top: "conv4"
+# }
+layer {
+  name: "pool4"
+  type: "Pooling"
+  bottom: "conv4"
+  top: "pool4"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+
+## Original
+# layer {
+#   name: "conv5"
+#   type: "Convolution"
+#   bottom: "pool4"
+#   top: "conv5"
+#   convolution_param {
+#     num_output: 192
+#     kernel_size: 3
+#     stride: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv5
+layer {
+  name: "conv5_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "pool4"
+  top: "conv5_logit"
+  top: "conv5_ind"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv5_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv5_logit"
+  bottom: "conv5_ind"
+  top: "conv5"
+  convolution_param {
+    num_output: 192
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv5
+layer {
+  name: "conv5_bn"
+  type: "BatchNorm"
+  bottom: "conv5"
+  top: "conv5"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+# layer {
+#   name: "conv5_relu"
+#   type: "ReLU"
+#   bottom: "conv5"
+#   top: "conv5"
+# }
+
+## Original
+# layer {
+#   name: "conv6"
+#   type: "Convolution"
+#   bottom: "conv5"
+#   top: "conv6"
+#   convolution_param {
+#     num_output: 192
+#     kernel_size: 1
+#     stride: 1
+#     weight_filler {
+#       type: "msra"
+#     }
+#     bias_filler {
+#       type: "constant"
+#     }
+#   }
+# }
+# START Tablenet conv6
+layer {
+  name: "conv6_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "conv5"
+  top: "conv6_logit"
+  top: "conv6_ind"
+  convolution_param {
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+    is_cumulative: true
+    balance_tree: true
+  }
+}
+layer {
+  name: "conv6_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv6_logit"
+  bottom: "conv6_ind"
+  top: "conv6"
+  convolution_param {
+    num_output: 192
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 32
+    num_terms_per_tree: 5
+  }
+}
+# END Tablenet conv6
+layer {
+  name: "conv6_bn"
+  type: "BatchNorm"
+  bottom: "conv6"
+  top: "conv6"
+  batch_norm_param { use_global_stats: false }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+  param { lr_mult: 0 }
+}
+layer {
+  name: "conv6_relu"
+  type: "ReLU"
+  bottom: "conv6"
+  top: "conv6"
+}
+
+layer {
+  name: "conv7"
+  type: "Convolution"
+  bottom: "conv6"
+  top: "conv7"
+  convolution_param {
+    num_output: 10
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "conv7_relu"
+  type: "ReLU"
+  bottom: "conv7"
+  top: "conv7"
+}
+layer {
+  name: "pool7"
+  type: "Pooling"
+  bottom: "conv7"
+  top: "pool7"
+  pooling_param {
+    pool: AVE
+    kernel_size: 6
+  }
+}
+
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "pool7"
+  bottom: "label"
+  top: "loss"
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "pool7"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}

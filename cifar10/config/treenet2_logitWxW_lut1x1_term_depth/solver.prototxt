@@ -18,9 +18,9 @@ weight_decay: 0.0005
 #power: 0.5
 lr_policy: "multistep"
 gamma: 0.1
-stepsize: 3000
 stepvalue: 3000
-stepvalue: 3000
+stepvalue: 6000
+stepvalue: 9000
 # Display every 100 iterations
 display: 100
 average_loss: 500

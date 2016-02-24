@@ -26,7 +26,12 @@ NUM_LABELS=10
 # Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
 # ->
 
-for NET_ID in treenet2_logitWxW_lut1x1_term_depth; do
+# (203)
+#NET_ID=treenet2_logitWxW_lut1x1_term_1_norelu
+# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
+# ->
+
+for NET_ID in treenet2_logitWxW_lut1x1_term_1_norelu; do
 
 DEV_ID=0
 
