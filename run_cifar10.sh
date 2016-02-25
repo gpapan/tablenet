@@ -8,8 +8,11 @@ NUM_LABELS=10
 
 # Times refer to 100 train iters of 128-image mini-batches on a Titan-X.
 
-# Baseline
+# Baselines
+
 #NET_ID=convnet
+
+#NET_ID=convnet_bottleneck
 
 # (200+) Tablenet with tree-structured classifier and LUT stages.
 #        No sigmoids, just logits.
@@ -18,20 +21,17 @@ NUM_LABELS=10
 #NET_ID=treenet2_logitWxW_lut1x1_term_depth
 # num_terms_per_tree=depth, is_cumulative=true, balance_tree=true
 # Forward pass: 92.514 ms. Backward pass: 616.978 ms.
-# ->
+# -> 0.8323
 
 # (202)
 #NET_ID=treenet2_logitWxW_lut1x1_term_1
 # num_terms_per_tree=1, is_cumulative=true, balance_tree=true
 # Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
-# ->
+# -> 0.7118
 
 # (203)
-#NET_ID=treenet2_logitWxW_lut1x1_term_1_norelu
-# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
-# ->
 
-for NET_ID in treenet2_logitWxW_lut1x1_term_1_norelu; do
+for NET_ID in convnet_bottleneck; do
 
 DEV_ID=0
 
