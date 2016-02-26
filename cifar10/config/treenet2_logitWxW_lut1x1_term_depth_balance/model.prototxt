@@ -83,7 +83,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
@@ -169,7 +169,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
@@ -266,7 +266,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
@@ -352,7 +352,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
@@ -447,7 +447,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
@@ -531,7 +531,7 @@ layer {
     num_terms_per_tree: 5
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-2
+    balance_tree_loss_weight: 1e-1
   }
 }
 layer {
