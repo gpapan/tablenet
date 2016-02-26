@@ -60,18 +60,26 @@ NUM_LABELS=10
 #
 # (201)
 #NET_ID=treenet2_logitWxW_lut1x1_term_depth
-# num_terms_per_tree=depth, is_cumulative=true, balance_tree=true, 10K iters
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree_init=true, 10K iters
 # Forward pass: 17.1941 ms. Backward pass: 60.3971 ms. (conv2_lut forward: 1.12195 ms)
 # -> 0.9896 ("poly", power: 0.5)
 # -> 0.9859 ("inv", gamma: 0.0001, power: 0.75)
 
 # (202)
 #NET_ID=treenet2_logitWxW_lut1x1_term_1
-# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
+# num_terms_per_tree=1, is_cumulative=true, balance_tree_init=true
 # Forward pass: 15.1398 ms. Backward pass: 49.4828 ms. (conv2_lut forward: 0.795006 ms)
 # -> 0.9876 ("poly", power: 0.5)
 
-for NET_ID in treenet2_logitWxW_lut1x1_term_1; do
+# (203)
+#NET_ID=treenet2_logitWxW_lut1x1_term_depth_balance
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree_init=true, 10K iters
+# Forward pass: 24.1196 ms. Backward pass: 61.2203 ms.
+# -> 0.9850 ("poly", power: 0.5), if balance_tree_loss_weight: 1 in all layers.
+# -> 0.9872 ("poly", power: 0.5), if balance_tree_loss_weight: 0.1 in all layers.
+# -> 0.9881 ("poly", power: 0.5), if balance_tree_loss_weight: 1e-7 in all layers.
+
+for NET_ID in treenet2_logitWxW_lut1x1_term_depth_balance; do
 
 DEV_ID=0
 
@@ -92,8 +100,8 @@ ${DATA_DIR}/prepare_mnist.sh
 
 # Run 
 
-RUN_TRAIN=0
-RUN_TIME=1
+RUN_TRAIN=1
+RUN_TIME=0
 RUN_TEST=0
 
 # Training + Testing

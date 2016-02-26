@@ -11,8 +11,11 @@ NUM_LABELS=10
 # Baselines
 
 #NET_ID=convnet
+# --> 0.8982 (with slow train schedule @50K iters)
+# --> 0.8863 (with aggresive train schedule @10K iters, like methods below)
 
 #NET_ID=convnet_bottleneck
+# --> 0.8637
 
 # (200+) Tablenet with tree-structured classifier and LUT stages.
 #        No sigmoids, just logits.
@@ -31,7 +34,7 @@ NUM_LABELS=10
 
 # (203)
 
-for NET_ID in convnet_bottleneck; do
+for NET_ID in treenet_logitWxW_lut1x1_noncum_depth; do
 
 DEV_ID=0
 
