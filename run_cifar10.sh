@@ -34,7 +34,7 @@ NUM_LABELS=10
 
 # (203)
 
-for NET_ID in treenet_logitWxW_lut1x1_noncum_depth; do
+for NET_ID in treenet2_logitWxW_lut1x1_term_depth_balance; do
 
 DEV_ID=0
 
