@@ -14,27 +14,45 @@ NUM_LABELS=10
 # --> 0.8982 (with slow train schedule @50K iters)
 # --> 0.8863 (with aggresive train schedule @10K iters, like methods below)
 
-#NET_ID=convnet_bottleneck
+#NET_ID=convnet_bottleneck (similar to term_depth)
 # --> 0.8637
+
+#NET_ID=convnet_bottleneck_term_1 (using, however the original conv1 layer)
+# --> 
+
+#NET_ID=treenet_logitWxW_lut1x1_noncum_leaf
+# --> 0.8318
+
+#NET_ID=treenet_logitWxW_lut1x1_noncum_depth
+# --> 0.7596
 
 # (200+) Tablenet with tree-structured classifier and LUT stages.
 #        No sigmoids, just logits.
 #
 # (201)
 #NET_ID=treenet2_logitWxW_lut1x1_term_depth
-# num_terms_per_tree=depth, is_cumulative=true, balance_tree=true
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree_init=true
 # Forward pass: 92.514 ms. Backward pass: 616.978 ms.
 # -> 0.8323
 
 # (202)
 #NET_ID=treenet2_logitWxW_lut1x1_term_1
-# num_terms_per_tree=1, is_cumulative=true, balance_tree=true
+# num_terms_per_tree=1, is_cumulative=true, balance_tree_init=true
 # Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
 # -> 0.7118
 
 # (203)
+#NET_ID=treenet2_logitWxW_lut1x1_term_1_balance (using, however the original conv1 layer)
+# num_terms_per_tree=1, is_cumulative=true, balance_tree_init=true, balance_tree_loss_weight: 1e-1
+# Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
+# -> 0.7118
 
-for NET_ID in treenet2_logitWxW_lut1x1_term_depth_balance; do
+# (204)
+#NET_ID=treenet2_logitWxW_lut1x1_term_depth_balance
+# num_terms_per_tree=depth, is_cumulative=true, balance_tree_init=true, balance_tree_loss_weight: 1e-1
+# -> 0.8370
+
+for NET_ID in treenet2_logitWxW_lut1x1_term_1_balance; do
 
 DEV_ID=0
 
