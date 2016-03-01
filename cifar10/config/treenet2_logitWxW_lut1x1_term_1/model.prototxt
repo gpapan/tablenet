@@ -81,7 +81,7 @@ layer {
     group: 1
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {
@@ -165,7 +165,7 @@ layer {
     group: 16
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {
@@ -260,7 +260,7 @@ layer {
     group: 32
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {
@@ -344,7 +344,7 @@ layer {
     group: 32
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {
@@ -437,7 +437,7 @@ layer {
     group: 32
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {
@@ -519,7 +519,7 @@ layer {
     group: 32
     num_terms_per_tree: 1
     is_cumulative: true
-    balance_tree: true
+    balance_tree_init: true
   }
 }
 layer {

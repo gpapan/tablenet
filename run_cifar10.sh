@@ -18,7 +18,7 @@ NUM_LABELS=10
 # --> 0.8637
 
 #NET_ID=convnet_bottleneck_term_1 (using, however the original conv1 layer)
-# --> 
+# --> 0.7584
 
 #NET_ID=treenet_logitWxW_lut1x1_noncum_leaf
 # --> 0.8318
@@ -42,10 +42,11 @@ NUM_LABELS=10
 # -> 0.7118
 
 # (203)
-#NET_ID=treenet2_logitWxW_lut1x1_term_1_balance (using, however the original conv1 layer)
-# num_terms_per_tree=1, is_cumulative=true, balance_tree_init=true, balance_tree_loss_weight: 1e-1
-# Forward pass: 61.4793 ms. Backward pass: 300.621 ms.
-# -> 0.7118
+#NET_ID=treenet2_logitWxW_lut1x1_term_1_balance
+# num_terms_per_tree=1, is_cumulative=true, balance_tree_init=true
+# -> 0.6768 (balance_tree_loss_weight: 1e-1, using the original conv1 layer)
+# -> 0.7974 (balance_tree_loss_weight: 1e-7)
+# -> 0.8039 (balance_tree_loss_weight: 0)
 
 # (204)
 #NET_ID=treenet2_logitWxW_lut1x1_term_depth_balance

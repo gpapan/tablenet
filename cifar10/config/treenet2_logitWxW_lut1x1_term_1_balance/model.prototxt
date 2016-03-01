@@ -41,73 +41,73 @@ layer {
 }
 
 ## Original
-layer {
-  name: "conv1"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv1"
-  convolution_param {
-    num_output: 64
-    kernel_size: 3
-    stride: 1
-    pad: 1
-    weight_filler {
-      type: "msra"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-# START Tablenet conv1
 # layer {
-#   name: "conv1_classify"
-#   type: "ConvolutionTreeClassify2"
+#   name: "conv1"
+#   type: "Convolution"
 #   bottom: "data"
-#   top: "conv1_logit"
-#   top: "conv1_ind"
-#   top: "conv1_balance"
+#   top: "conv1"
 #   convolution_param {
+#     num_output: 64
 #     kernel_size: 3
 #     stride: 1
 #     pad: 1
 #     weight_filler {
-#       type: "gaussian"
-#       std: 0.1
+#       type: "msra"
 #     }
-#     bias_filler { type: "constant" }
-#   }
-#   tree_classifier2_param {
-#     depth: 5
-#     group: 1
-#     num_terms_per_tree: 1
-#     is_cumulative: true
-#     balance_tree_init: true
-#     balance_tree_loss_weight: 1e-1
+#     bias_filler {
+#       type: "constant"
+#     }
 #   }
 # }
-# layer {
-#   name: "conv1_lut"
-#   type: "ConvolutionTreeLUT2"
-#   bottom: "conv1_logit"
-#   bottom: "conv1_ind"
-#   top: "conv1"
-#   convolution_param {
-#     num_output: 64
-#     kernel_size: 1
-#     stride: 1
-#     weight_filler {
-#       type: "gaussian"
-#       std: 0.1
-#     }
-#     bias_filler { type: "constant" }
-#   }
-#   tree_lut2_param {
-#     depth: 5
-#     group: 1
-#     num_terms_per_tree: 1
-#   }
-# }
+# START Tablenet conv1
+layer {
+  name: "conv1_classify"
+  type: "ConvolutionTreeClassify2"
+  bottom: "data"
+  top: "conv1_logit"
+  top: "conv1_ind"
+  top: "conv1_balance"
+  convolution_param {
+    kernel_size: 3
+    stride: 1
+    pad: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_classifier2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 1
+    is_cumulative: true
+    balance_tree_init: true
+    balance_tree_loss_weight: 0
+  }
+}
+layer {
+  name: "conv1_lut"
+  type: "ConvolutionTreeLUT2"
+  bottom: "conv1_logit"
+  bottom: "conv1_ind"
+  top: "conv1"
+  convolution_param {
+    num_output: 64
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+  tree_lut2_param {
+    depth: 5
+    group: 1
+    num_terms_per_tree: 1
+  }
+}
 # END Tablenet conv1
 layer {
   name: "conv1_bn"
@@ -169,7 +169,7 @@ layer {
     num_terms_per_tree: 1
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-1
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -266,7 +266,7 @@ layer {
     num_terms_per_tree: 1
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-1
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -352,7 +352,7 @@ layer {
     num_terms_per_tree: 1
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-1
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -447,7 +447,7 @@ layer {
     num_terms_per_tree: 1
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-1
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -531,7 +531,7 @@ layer {
     num_terms_per_tree: 1
     is_cumulative: true
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-1
+    balance_tree_loss_weight: 0
   }
 }
 layer {
