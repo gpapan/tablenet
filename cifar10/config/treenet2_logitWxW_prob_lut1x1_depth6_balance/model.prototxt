@@ -78,7 +78,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 1
     is_cumulative: true
     balance_tree_init: true
@@ -92,7 +92,7 @@ layer {
   top: "conv1_prob"
   top: "conv1_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 1
   }
 }
@@ -113,7 +113,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 1
     num_terms_per_tree: 1
   }
@@ -174,7 +174,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 16
     is_cumulative: true
     balance_tree_init: true
@@ -188,7 +188,7 @@ layer {
   top: "conv2_prob"
   top: "conv2_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 16
   }
 }
@@ -209,7 +209,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 16
     num_terms_per_tree: 1
   }
@@ -281,7 +281,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 32
     is_cumulative: true
     balance_tree_init: true
@@ -295,7 +295,7 @@ layer {
   top: "conv3_prob"
   top: "conv3_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 32
   }
 }
@@ -316,7 +316,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -377,7 +377,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 32
     is_cumulative: true
     balance_tree_init: true
@@ -391,7 +391,7 @@ layer {
   top: "conv4_prob"
   top: "conv4_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 32
   }
 }
@@ -412,7 +412,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -482,7 +482,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 32
     is_cumulative: true
     balance_tree_init: true
@@ -496,7 +496,7 @@ layer {
   top: "conv5_prob"
   top: "conv5_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 32
   }
 }
@@ -517,7 +517,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -576,7 +576,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_classifier2_param {
-    depth: 5
+    depth: 6
     group: 32
     is_cumulative: true
     balance_tree_init: true
@@ -590,7 +590,7 @@ layer {
   top: "conv6_prob"
   top: "conv6_ind"
   tree_prob2_param {
-    depth: 5
+    depth: 6
     group: 32
   }
 }
@@ -611,7 +611,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
