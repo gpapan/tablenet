@@ -69,10 +69,12 @@ NUM_LABELS=10
 # ->  (depth=3/4, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth2_balance
-# ->  (depth=2/3, balance_tree_loss_weight: 1e-7, is_cumulative: true)
+# -> 0.7807 (depth=2/3, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
+#NET_ID=treenet2_logitWxW_prob_lut1x1_depth1_balance
+# ->  (depth=1/2, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
-for NET_ID in treenet2_logitWxW_prob_lut1x1_depth2_balance; do
+for NET_ID in treenet2_logitWxW_prob_lut1x1_depth1_balance; do
 
 DEV_ID=0
 
