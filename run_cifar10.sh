@@ -59,11 +59,13 @@ NUM_LABELS=10
 # ->  (depth=5/6, balance_tree_loss_weight: 0, is_cumulative: false). cf: treenet_logitWxW_lut1x1_noncum_leaf
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth6_balance
-# ->  (depth=6/7, balance_tree_loss_weight: 1e-7, is_cumulative: true)
-# ->  (depth=6/7, balance_tree_loss_weight: 0, is_cumulative: false)
+# -> 0.7287 (depth=6/7, balance_tree_loss_weight: 1e-7, is_cumulative: true)
+
+#NET_ID=treenet2_logitWxW_prob_lut1x1_depth4_balance
+# ->  (depth=4/5, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 
-for NET_ID in treenet2_logitWxW_prob_lut1x1_depth6_balance; do
+for NET_ID in treenet2_logitWxW_prob_lut1x1_depth4_balance; do
 
 DEV_ID=0
 
