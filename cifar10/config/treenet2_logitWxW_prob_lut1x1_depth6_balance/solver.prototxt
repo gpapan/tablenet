@@ -18,16 +18,16 @@ weight_decay: 0.0005
 #power: 0.5
 lr_policy: "multistep"
 gamma: 0.1
-stepvalue: 3000
-stepvalue: 6000
-stepvalue: 9000
+stepvalue: 7000
+stepvalue: 14000
+stepvalue: 15000
 # Display every 100 iterations
 display: 100
 average_loss: 500
 # The maximum number of iterations
-max_iter: 10000
+max_iter: 15000
 # snapshot intermediate results
-snapshot: 10000
+snapshot: 15000
 snapshot_prefix: "${EXP}/model/${NET_ID}/train"
 # solver mode: CPU or GPU
 solver_mode: GPU
