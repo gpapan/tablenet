@@ -80,9 +80,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 1
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -176,9 +176,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 16
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -283,9 +283,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 32
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -379,9 +379,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 32
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -484,9 +484,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 32
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
@@ -578,9 +578,9 @@ layer {
   tree_classifier2_param {
     depth: 5
     group: 32
-    is_cumulative: true
+    is_cumulative: false
     balance_tree_init: true
-    balance_tree_loss_weight: 1e-7
+    balance_tree_loss_weight: 0
   }
 }
 layer {
