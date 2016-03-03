@@ -113,7 +113,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 1
     num_terms_per_tree: 1
   }
@@ -209,7 +209,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 16
     num_terms_per_tree: 1
   }
@@ -316,7 +316,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -412,7 +412,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -517,7 +517,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
@@ -611,7 +611,7 @@ layer {
     bias_filler { type: "constant" }
   }
   tree_lut2_param {
-    depth: 5
+    depth: 6
     group: 32
     num_terms_per_tree: 1
   }
