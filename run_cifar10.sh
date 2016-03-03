@@ -65,6 +65,9 @@ NUM_LABELS=10
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth4_balance
 # -> 0.8235 (depth=4/5, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
+#NET_ID=treenet2_logitWxW_prob_lut1x1_depth4
+# ->  (depth=4/5, balance_tree_init: f, balance_tree_loss_weight: 0, is_cumulative: true)
+
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth3_balance
 # ->  (depth=3/4, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
