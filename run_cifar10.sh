@@ -55,14 +55,13 @@ NUM_LABELS=10
 
 # (300+) Tablenet with tree-structured logit, prob, and LUT stages.
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth5_balance
-# -> 0.7821 (depth=5, balance_tree_loss_weight: 1e-7, is_cumulative: true)
-# ->  (depth=5, balance_tree_loss_weight: 1e-7, is_cumulative: false)
+# ->  (depth=5/6, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth6_balance
-# ->  (depth=6, balance_tree_loss_weight: 1e-7)
+# ->  (depth=6/7, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 
-for NET_ID in treenet2_logitWxW_prob_lut1x1_depth5_balance; do
+for NET_ID in treenet2_logitWxW_prob_lut1x1_depth6_balance; do
 
 DEV_ID=0
 
