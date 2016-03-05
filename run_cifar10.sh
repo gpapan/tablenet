@@ -56,8 +56,8 @@ NUM_LABELS=10
 # (300+) Tablenet with tree-structured logit, prob, and LUT stages.
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth5_balance
 # -> 0.8196 (depth=5/6, balance_tree_loss_weight: 1e-7, is_cumulative: true)
-# -> 0.8030 (depth=5/6, balance_tree_loss_weight: 0, is_cumulative: false). cf: treenet_logitWxW_lut1x1_noncum_leaf
 # -> 0.8196 (depth=5/6, balance_tree_loss_weight: 0, is_cumulative: true)
+# -> 0.8030 (depth=5/6, balance_tree_loss_weight: 0, is_cumulative: false). cf: treenet_logitWxW_lut1x1_noncum_leaf
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth6_balance
 # -> 0.7287 (depth=6/7, balance_tree_loss_weight: 1e-7, is_cumulative: true)
@@ -66,18 +66,35 @@ NUM_LABELS=10
 # -> 0.8235 (depth=4/5, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth4
-# ->  (depth=4/5, balance_tree_init: f, balance_tree_loss_weight: 0, is_cumulative: true)
+# -> 0.8209 (depth=4/5, balance_tree_init: f, balance_tree_loss_weight: 0, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth3_balance
-# ->  (depth=3/4, balance_tree_loss_weight: 1e-7, is_cumulative: true)
+# -> 0.8041 (depth=3/4, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth2_balance
 # -> 0.7807 (depth=2/3, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
 #NET_ID=treenet2_logitWxW_prob_lut1x1_depth1_balance
-# ->  (depth=1/2, balance_tree_loss_weight: 1e-7, is_cumulative: true)
+# -> 0.7217 (depth=1/2, balance_tree_loss_weight: 1e-7, is_cumulative: true)
 
-for NET_ID in treenet2_logitWxW_prob_lut1x1_depth1_balance; do
+# (400+) Tablenet with stochastic tree-structured logit, prob, and LUT stages.
+
+# NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_soft
+# depth=5, temperature: 0.1 (train) 0.0 (test), flip_prob: 0, num_samples: 1, hard_paths: false
+# A. temperature: 0.1 in classify, 1 in prob layers
+# -> 0.8231 temperature: 0.0 (test), num_samples: 1
+# -> 0.8240 temperature: 0.1 (test), num_samples: 1
+# -> 0.8266 temperature: 0.1 (test), num_samples: 10
+# B. temperature: 0.1 in both classify and prob layers -> does not work
+
+# NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_hard
+# depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, num_samples: 1, hard_paths: true
+# A. temperature: 0.1 in classify, 1 in prob layers (gpapan.mtv)
+# ->
+# B. temperature: 1 in classify (weight std: 1), 1 in prob layers (mavra.lax)
+# ->
+
+for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_sample_hard; do
 
 DEV_ID=0
 
