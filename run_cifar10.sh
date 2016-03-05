@@ -90,11 +90,18 @@ NUM_LABELS=10
 # NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_hard
 # depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, num_samples: 1, hard_paths: true
 # A. temperature: 0.1 in classify, 1 in prob layers (gpapan.mtv)
-# ->
+# -> 0.6023
 # B. temperature: 1 in classify (weight std: 1), 1 in prob layers (mavra.lax)
-# ->
+# -> killed (0.2777 @ 4500 iters)
 
-for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_sample_hard; do
+# NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_flip_soft
+# depth=5, temperature: 0, flip_prob in train only, num_samples: 1, hard_paths: false
+# -> 0.7200 flip_prob: 0.05
+# ->  flip_prob: 0.01 (mavra.lax)
+# ->  flip_prob: 0 (gpapan.mtv)
+
+
+for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_flip_soft; do
 
 DEV_ID=0
 
