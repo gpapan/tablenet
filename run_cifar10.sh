@@ -97,11 +97,15 @@ NUM_LABELS=10
 # NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_flip_soft
 # depth=5, temperature: 0, flip_prob in train only, num_samples: 1, hard_paths: false
 # -> 0.7200 flip_prob: 0.05
-# ->  flip_prob: 0.01 (mavra.lax)
-# ->  flip_prob: 0 (gpapan.mtv)
+# -> 0.8232 flip_prob: 0.01 (mavra.lax)
+# -> 0.8211 flip_prob: 0 (gpapan.mtv)
+
+# NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_soft
+# depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, hard_paths: false
+# ->  num_samples (train+test): 2 (mavra.lax)
 
 
-for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_flip_soft; do
+for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_sample_soft; do
 
 DEV_ID=0
 

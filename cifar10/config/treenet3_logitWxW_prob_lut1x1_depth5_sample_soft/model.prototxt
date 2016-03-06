@@ -79,7 +79,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -180,7 +180,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -292,7 +292,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -393,7 +393,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -503,7 +503,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -602,7 +602,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 1
+    num_samples: 2
   }
   include { phase: TRAIN }
   include { phase: TEST }
