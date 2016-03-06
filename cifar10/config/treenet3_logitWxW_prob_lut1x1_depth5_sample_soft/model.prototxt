@@ -79,7 +79,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -94,7 +94,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 1
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
@@ -180,7 +180,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -195,7 +195,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 16
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
@@ -292,7 +292,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -307,7 +307,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
@@ -393,7 +393,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -408,7 +408,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
@@ -503,7 +503,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -518,7 +518,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
@@ -602,7 +602,7 @@ layer {
     is_cumulative: true
     temperature: 0.1
     flip_prob: 0
-    num_samples: 2
+    num_samples: 1
   }
   include { phase: TRAIN }
   include { phase: TEST }
@@ -617,7 +617,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 1
+    temperature: 0.5
     hard_paths: false
   }
 }
