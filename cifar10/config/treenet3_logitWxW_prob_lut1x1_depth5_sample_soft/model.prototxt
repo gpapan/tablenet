@@ -94,7 +94,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 1
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }
@@ -195,7 +195,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 16
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }
@@ -307,7 +307,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }
@@ -408,7 +408,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }
@@ -518,7 +518,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }
@@ -617,7 +617,7 @@ layer {
   tree_prob3_param {
     depth: 5
     group: 32
-    temperature: 0.5
+    temperature: 0.1
     hard_paths: false
   }
 }

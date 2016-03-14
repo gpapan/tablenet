@@ -20,10 +20,10 @@ NUM_LABELS=10
 #NET_ID=convnet_bottleneck_term_1 (using, however the original conv1 layer)
 # --> 0.7584
 
-#NET_ID=treenet_logitWxW_lut1x1_noncum_leaf
+#NET_ID=treenet1_logitWxW_lut1x1_noncum_leaf
 # --> 0.8318 (alpha: 1, is_cumulative: f, balance_tree_init: f, haar_param: f, 50K + 20K iters)
 
-#NET_ID=treenet_logitWxW_lut1x1_noncum_depth
+#NET_ID=treenet1_logitWxW_lut1x1_noncum_depth
 # --> 0.7596
 
 # (200+) Tablenet with tree-structured classifier and LUT stages.
@@ -86,6 +86,8 @@ NUM_LABELS=10
 # -> 0.8240 temperature: 0.1 (test), num_samples: 1
 # -> 0.8266 temperature: 0.1 (test), num_samples: 10
 # B. temperature: 0.1 in both classify and prob layers -> does not work
+# C. temperature: 0.1 in classify, 0.5 in prob layers (gpapan.mtv)
+# -> 0.7059
 
 # NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_hard
 # depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, num_samples: 1, hard_paths: true
@@ -102,7 +104,7 @@ NUM_LABELS=10
 
 # NET_ID=treenet3_logitWxW_prob_lut1x1_depth5_sample_soft
 # depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, hard_paths: false
-# ->  num_samples (train+test): 2 (mavra.lax)
+# -> 0.8272 num_samples (train+test): 2 (mavra.lax)
 
 
 for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_sample_soft; do
