@@ -106,8 +106,14 @@ NUM_LABELS=10
 # depth=5, temperature: 0.1 (train) 0.1 (test), flip_prob: 0, hard_paths: false
 # -> 0.8272 num_samples (train+test): 2 (mavra.lax)
 
+# (500+) TreeNet with configurable number of bottleneck layer terms.
 
-for NET_ID in treenet3_logitWxW_prob_lut1x1_depth5_sample_soft; do
+# NET_ID=treenet_beg_depth3_term1_norelu
+# temperature: 0.1 (train) 0.1 (test), terms_per_group=1
+# -> 
+
+
+for NET_ID in treenet_beg_depth3_term1_norelu; do
 
 DEV_ID=0
 
