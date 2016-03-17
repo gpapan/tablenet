@@ -108,12 +108,12 @@ NUM_LABELS=10
 
 # (500+) TreeNet with configurable number of bottleneck layer terms.
 
-# NET_ID=treenet_beg_depth3_term1_norelu
+# NET_ID=treenet_beg_depth3_bottleneck_norelu
 # model2.prototxt (bottleneck-style, depth = 3, group = 4) temperature: 0.1 (train) 0.1 (test)
 # -> 0.8573
 
 
-for NET_ID in treenet_beg_depth3_term1_norelu; do
+for NET_ID in treenet_beg_depth3_bottleneck_norelu; do
 
 DEV_ID=0
 
