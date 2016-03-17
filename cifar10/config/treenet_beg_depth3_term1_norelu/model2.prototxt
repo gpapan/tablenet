@@ -37,54 +37,54 @@ layer {
 }
 
 ## Original
-# layer {
-#   name: "conv1"
-#   type: "Convolution"
-#   bottom: "data"
-#   top: "conv1"
-#   convolution_param {
-#     num_output: 64
-#     kernel_size: 3
-#     stride: 1
-#     pad: 1
-#     weight_filler {
-#       type: "msra"
-#     }
-#     bias_filler {
-#       type: "constant"
-#     }
-#   }
-# }
 layer {
   name: "conv1"
-  type: "DecisionTreeConvolution"
+  type: "Convolution"
   bottom: "data"
   top: "conv1"
-  top: "conv1_entropy"
   convolution_param {
     num_output: 64
     kernel_size: 3
     stride: 1
     pad: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 1
-    num_bottleneck: 1
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.2 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.3 }
-    out_bias_filler { type: "constant" }
-  }
-  tree_classifier_param {
-    is_cumulative: true
-    temperature: 0.1
+    weight_filler {
+      type: "msra"
+    }
+    bias_filler {
+      type: "constant"
+    }
   }
 }
+# layer {
+#   name: "conv1"
+#   type: "DecisionTreeConvolution"
+#   bottom: "data"
+#   top: "conv1"
+#   top: "conv1_entropy"
+#   convolution_param {
+#     num_output: 64
+#     kernel_size: 3
+#     stride: 1
+#     pad: 1
+#   }
+#   tree_conv_param {
+#     depth: 3
+#     group: 1
+#     num_bottleneck: 4
+#     has_relu: false
+#     has_proj: true
+#     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
+#     tree_classify_bias_filler { type: "constant" }
+#     proj_weight_filler { type: "gaussian"  std: 0.2 }
+#     proj_bias_filler { type: "constant" }
+#     out_weight_filler { type: "gaussian"  std: 0.3 }
+#     out_bias_filler { type: "constant" }
+#   }
+#   tree_classifier_param {
+#     is_cumulative: true
+#     temperature: 0.1
+#   }
+# }
 layer {
   name: "conv1_bn"
   type: "BatchNorm"
@@ -135,10 +135,10 @@ layer {
   }
   tree_conv_param {
     depth: 3
-    group: 16
+    group: 4
     num_bottleneck: 16
     has_relu: false
-    has_proj: false
+    has_proj: true
     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
     tree_classify_bias_filler { type: "constant" }
     proj_weight_filler { type: "gaussian"  std: 0.1 }
@@ -212,10 +212,10 @@ layer {
   }
   tree_conv_param {
     depth: 3
-    group: 32
-    num_bottleneck: 32
+    group: 4
+    num_bottleneck: 16
     has_relu: false
-    has_proj: false
+    has_proj: true
     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
     tree_classify_bias_filler { type: "constant" }
     proj_weight_filler { type: "gaussian"  std: 0.1 }
@@ -279,10 +279,10 @@ layer {
   }
   tree_conv_param {
     depth: 3
-    group: 32
+    group: 4
     num_bottleneck: 32
     has_relu: false
-    has_proj: false
+    has_proj: true
     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
     tree_classify_bias_filler { type: "constant" }
     proj_weight_filler { type: "gaussian"  std: 0.1 }
@@ -355,10 +355,10 @@ layer {
   }
   tree_conv_param {
     depth: 3
-    group: 32
-    num_bottleneck: 32
+    group: 4
+    num_bottleneck: 48
     has_relu: false
-    has_proj: false
+    has_proj: true
     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
     tree_classify_bias_filler { type: "constant" }
     proj_weight_filler { type: "gaussian"  std: 0.1 }
@@ -420,10 +420,10 @@ layer {
   }
   tree_conv_param {
     depth: 3
-    group: 32
-    num_bottleneck: 32
+    group: 4
+    num_bottleneck: 48
     has_relu: false
-    has_proj: false
+    has_proj: true
     tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
     tree_classify_bias_filler { type: "constant" }
     proj_weight_filler { type: "gaussian"  std: 0.1 }

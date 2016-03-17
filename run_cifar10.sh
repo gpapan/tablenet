@@ -109,8 +109,8 @@ NUM_LABELS=10
 # (500+) TreeNet with configurable number of bottleneck layer terms.
 
 # NET_ID=treenet_beg_depth3_term1_norelu
-# temperature: 0.1 (train) 0.1 (test), terms_per_group=1
-# -> 
+# model2.prototxt (bottleneck-style, depth = 3, group = 4) temperature: 0.1 (train) 0.1 (test)
+# -> 0.8573
 
 
 for NET_ID in treenet_beg_depth3_term1_norelu; do
@@ -163,9 +163,9 @@ if [ ${RUN_TIME} -eq 1 ]; then
 	MODEL=`ls -t ${MODEL_DIR}/train_iter_*.caffemodel | head -n 1`
     fi
     echo Testing net ${EXP}/${NET_ID}
-    TEST_ITER=100  # 10,000 images in 100 batches
+    TEST_ITER=10  # 10,000 images in 100 batches
     CMD="${CAFFE_BIN} time \
-         --model=${CONFIG_DIR}/model.prototxt \
+         --model=${CONFIG_DIR}/model2.prototxt \
          --weights=${MODEL} \
          --gpu=${DEV_ID} \
          --iterations=${TEST_ITER}"

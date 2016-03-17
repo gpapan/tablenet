@@ -55,36 +55,64 @@ layer {
 #     }
 #   }
 # }
+# START Tablenet conv1
 layer {
-  name: "conv1"
-  type: "DecisionTreeConvolution"
+  name: "conv1_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "data"
-  top: "conv1"
+  top: "conv1_logit"
+  top: "conv1_ind0"
   top: "conv1_entropy"
   convolution_param {
-    num_output: 64
     kernel_size: 3
     stride: 1
     pad: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 1
-    num_bottleneck: 1
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.2 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.3 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 1
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv1_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv1_logit"
+  bottom: "conv1_ind0"
+  top: "conv1_prob"
+  top: "conv1_ind"
+  tree_prob_param {
+    depth: 3
+    group: 1
+  }
+}
+layer {
+  name: "conv1_lut"
+  type: "IndexedConvolution"
+  bottom: "conv1_prob"
+  bottom: "conv1_ind"
+  top: "conv1"
+  convolution_param {
+    num_output: 64
+    mixtures: 8
+    group_in: 1
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv1
 layer {
   name: "conv1_bn"
   type: "BatchNorm"
@@ -121,36 +149,64 @@ layer {
 #     }
 #   }
 # }
+# START Tablenet conv2
 layer {
-  name: "conv2"
-  type: "DecisionTreeConvolution"
+  name: "conv2_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "conv1"
-  top: "conv2"
+  top: "conv2_logit"
+  top: "conv2_ind0"
   top: "conv2_entropy"
   convolution_param {
-    num_output: 64
     kernel_size: 3
     stride: 1
     pad: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 16
-    num_bottleneck: 16
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.1 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.1 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 16
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv2_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv2_logit"
+  bottom: "conv2_ind0"
+  top: "conv2_prob"
+  top: "conv2_ind"
+  tree_prob_param {
+    depth: 3
+    group: 16
+  }
+}
+layer {
+  name: "conv2_lut"
+  type: "IndexedConvolution"
+  bottom: "conv2_prob"
+  bottom: "conv2_ind"
+  top: "conv2"
+  convolution_param {
+    num_output: 64
+    mixtures: 8
+    group_in: 16
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv2
 layer {
   name: "conv2_bn"
   type: "BatchNorm"
@@ -198,36 +254,64 @@ layer {
 #     }
 #   }
 # }
+# START Tablenet conv3
 layer {
-  name: "conv3"
-  type: "DecisionTreeConvolution"
+  name: "conv3_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "pool2"
-  top: "conv3"
+  top: "conv3_logit"
+  top: "conv3_ind0"
   top: "conv3_entropy"
   convolution_param {
-    num_output: 128
     kernel_size: 3
     stride: 1
     pad: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 32
-    num_bottleneck: 32
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.1 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.1 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 32
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv3_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv3_logit"
+  bottom: "conv3_ind0"
+  top: "conv3_prob"
+  top: "conv3_ind"
+  tree_prob_param {
+    depth: 3
+    group: 32
+  }
+}
+layer {
+  name: "conv3_lut"
+  type: "IndexedConvolution"
+  bottom: "conv3_prob"
+  bottom: "conv3_ind"
+  top: "conv3"
+  convolution_param {
+    num_output: 128
+    mixtures: 8
+    group_in: 32
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv3
 layer {
   name: "conv3_bn"
   type: "BatchNorm"
@@ -266,35 +350,62 @@ layer {
 # }
 # START Tablenet conv4
 layer {
-  name: "conv4"
-  type: "DecisionTreeConvolution"
+  name: "conv4_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "conv3"
-  top: "conv4"
+  top: "conv4_logit"
+  top: "conv4_ind0"
   top: "conv4_entropy"
   convolution_param {
-    num_output: 128
     kernel_size: 3
     stride: 1
     pad: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 32
-    num_bottleneck: 32
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.1 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.1 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 32
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv4_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv4_logit"
+  bottom: "conv4_ind0"
+  top: "conv4_prob"
+  top: "conv4_ind"
+  tree_prob_param {
+    depth: 3
+    group: 32
+  }
+}
+layer {
+  name: "conv4_lut"
+  type: "IndexedConvolution"
+  bottom: "conv4_prob"
+  bottom: "conv4_ind"
+  top: "conv4"
+  convolution_param {
+    num_output: 128
+    mixtures: 8
+    group_in: 32
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv4
 layer {
   name: "conv4_bn"
   type: "BatchNorm"
@@ -343,34 +454,61 @@ layer {
 # }
 # START Tablenet conv5
 layer {
-  name: "conv5"
-  type: "DecisionTreeConvolution"
+  name: "conv5_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "pool4"
-  top: "conv5"
+  top: "conv5_logit"
+  top: "conv5_ind0"
   top: "conv5_entropy"
   convolution_param {
-    num_output: 192
     kernel_size: 3
     stride: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 32
-    num_bottleneck: 32
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.1 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.1 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 32
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv5_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv5_logit"
+  bottom: "conv5_ind0"
+  top: "conv5_prob"
+  top: "conv5_ind"
+  tree_prob_param {
+    depth: 3
+    group: 32
+  }
+}
+layer {
+  name: "conv5_lut"
+  type: "IndexedConvolution"
+  bottom: "conv5_prob"
+  bottom: "conv5_ind"
+  top: "conv5"
+  convolution_param {
+    num_output: 192
+    mixtures: 8
+    group_in: 32
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv5
 layer {
   name: "conv5_bn"
   type: "BatchNorm"
@@ -408,34 +546,61 @@ layer {
 # }
 # START Tablenet conv6
 layer {
-  name: "conv6"
-  type: "DecisionTreeConvolution"
+  name: "conv6_classify"
+  type: "ConvolutionTreeClassify"
   bottom: "conv5"
-  top: "conv6"
+  top: "conv6_logit"
+  top: "conv6_ind0"
   top: "conv6_entropy"
   convolution_param {
-    num_output: 192
     kernel_size: 1
     stride: 1
-  }
-  tree_conv_param {
-    depth: 3
-    group: 32
-    num_bottleneck: 32
-    has_relu: false
-    has_proj: false
-    tree_classify_weight_filler { type: "gaussian"  std: 0.1 }
-    tree_classify_bias_filler { type: "constant" }
-    proj_weight_filler { type: "gaussian"  std: 0.1 }
-    proj_bias_filler { type: "constant" }
-    out_weight_filler { type: "gaussian"  std: 0.1 }
-    out_bias_filler { type: "constant" }
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
   }
   tree_classifier_param {
+    depth: 3
+    group: 32
     is_cumulative: true
     temperature: 0.1
   }
 }
+layer {
+  name: "conv6_prob"
+  type: "ConvolutionTreeProb"
+  bottom: "conv6_logit"
+  bottom: "conv6_ind0"
+  top: "conv6_prob"
+  top: "conv6_ind"
+  tree_prob_param {
+    depth: 3
+    group: 32
+  }
+}
+layer {
+  name: "conv6_lut"
+  type: "IndexedConvolution"
+  bottom: "conv6_prob"
+  bottom: "conv6_ind"
+  top: "conv6"
+  convolution_param {
+    num_output: 192
+    mixtures: 8
+    group_in: 32
+    group_out: 1
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler { type: "constant" }
+  }
+}
+# END Tablenet conv6
 layer {
   name: "conv6_bn"
   type: "BatchNorm"
@@ -501,4 +666,15 @@ layer {
   bottom: "label"
   top: "accuracy"
   include { phase: TEST }
+}
+
+layer {
+  name: "silence"
+  type: "Silence"
+  bottom: "conv1_ind0"
+  bottom: "conv2_ind0"
+  bottom: "conv3_ind0"
+  bottom: "conv4_ind0"
+  bottom: "conv5_ind0"
+  bottom: "conv6_ind0"
 }
